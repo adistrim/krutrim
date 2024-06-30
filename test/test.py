@@ -1,5 +1,6 @@
 import asyncio
 import websockets
+import requests
 
 async def websocket_client(session_id):
     uri = f"ws://localhost:8000/ws/{session_id}"
@@ -15,4 +16,9 @@ async def websocket_client(session_id):
             response = await websocket.recv()
             print(f"Response from server: {response}")
 
-asyncio.run(websocket_client("your_session_id"))
+response = requests.get("http://localhost:8000/api/v1/generate_session_id/")
+response_data = response.json()
+session_id = response_data["session_id"]
+print(f"Generated session ID: {session_id}")
+
+asyncio.run(websocket_client(session_id))

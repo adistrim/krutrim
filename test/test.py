@@ -7,11 +7,12 @@ async def websocket_client(session_id):
     async with websockets.connect(uri) as websocket:
         while True:
             user_message = input("Enter your message ('exit' to quit): ")
-            await websocket.send(user_message)
             
             if user_message.lower() == 'exit':
                 print("Closing connection...")
                 break
+            
+            await websocket.send(user_message)
             
             response = await websocket.recv()
             print(f"Response from server: {response}")
